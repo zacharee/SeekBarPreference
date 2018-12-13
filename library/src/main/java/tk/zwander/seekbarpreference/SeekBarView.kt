@@ -43,7 +43,7 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
     var scaledProgress: Float
         get() = progress * scale
         set(value) {
-            setValue(progress / scale, true)
+            setValue(value / scale, true)
         }
 
     var dialogEnabled = true
@@ -70,11 +70,11 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
                 val a = array.getIndex(i)
 
                 when (a) {
-                    R.styleable.SeekBarView_minValue -> min = array.getInteger(a, minValue)
-                    R.styleable.SeekBarView_maxValue -> max = array.getInteger(a, maxValue)
-                    R.styleable.SeekBarView_scale -> scl = array.getFloat(a, scale)
-                    R.styleable.SeekBarView_units -> unt = array.getString(a)
-                    R.styleable.SeekBarView_defaultValue -> defaultValue = array.getInteger(a, defaultValue)
+                    R.styleable.SeekBarPreference_minValue -> min = array.getInteger(a, minValue)
+                    R.styleable.SeekBarPreference_maxValue -> max = array.getInteger(a, maxValue)
+                    R.styleable.SeekBarPreference_scale -> scl = array.getFloat(a, scale)
+                    R.styleable.SeekBarPreference_units -> unt = array.getString(a)
+                    R.styleable.SeekBarView_view_defaultValue -> defaultValue = array.getInteger(a, defaultValue)
                 }
             }
 
