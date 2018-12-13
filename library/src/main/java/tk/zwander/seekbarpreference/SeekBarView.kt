@@ -33,12 +33,18 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
     val down: ImageView by lazy { findViewById<ImageView>(R.id.down) }
     val reset: ImageView by lazy { findViewById<ImageView>(R.id.reset) }
 
-    private var units: String? = null
-    private var defaultValue = 0
-    private var minValue = 0
-    private var maxValue = 100
-    private var progress = 0
-    private var scale = 1f
+    var units: String? = null
+    var defaultValue = 0
+    var minValue = 0
+    var maxValue = 100
+    var progress = 0
+    var scale = 1f
+
+    var scaledProgress: Float
+        get() = progress * scale
+        set(value) {
+            progress = (progress / scale ).toInt()
+        }
 
     var dialogEnabled = true
         set(value) {
