@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="normal"
+            app:minValue="10"
+            app:maxValue="100"
+            app:units="mm"
+    />
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="scale"
+            app:minValue="10"
+            app:maxValue="100"
+            app:scale="0.1"
+            app:units="mm"
+    />
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="scale1"
+            app:minValue="10"
+            app:maxValue="100"
+            app:scale="0.1"
+            app:units="dp"
+    />
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="scale2"
+            app:minValue="10"
+            app:maxValue="100"
+            app:scale="0.1"
+            app:units="px"
+    />
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="scale3"
+            app:minValue="10"
+            app:maxValue="100"
+            app:scale="0.1"
+            app:units="dpo"
+    />
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="scale4"
+            app:minValue="10"
+            app:maxValue="100"
+            app:scale="0.1"
+            app:units="in"
+    />
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="scale5"
+            app:minValue="10"
+            app:maxValue="100"
+            app:scale="0.1"
+            app:units="why"
+    />
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="scale6"
+            app:minValue="10"
+            app:maxValue="100"
+            app:scale="0.1"
+            app:units="lol"
+    />
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="scale7"
+            app:minValue="10"
+            app:maxValue="100"
+            app:scale="0.1"
+            app:units="thonk"
+    />
+
+    <tk.zwander.seekbarpreference.SeekBarPreference
+            android:title="Test"
+            android:summary="Test"
+            android:key="scale8"
+            app:minValue="10"
+            app:maxValue="100"
+            app:scale="0.1"
+            app:units="huehue"
+    />
+
+</PreferenceScreen>

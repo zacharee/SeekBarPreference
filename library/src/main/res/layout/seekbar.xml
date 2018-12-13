@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tk.zwander.seekbarpreference.SeekBarView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/seekbar_root"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:gravity="center_vertical">
+
+    <ImageView
+        app:srcCompat="@drawable/ic_undo_black_24dp"
+        android:tint="?android:textColorPrimary"
+        android:id="@+id/reset"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:scaleType="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginEnd="4dp"
+        android:background="?selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/seekbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginRight="4dp" />
+
+    <com.rey.material.widget.Slider
+        android:id="@+id/seekbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/value_holder"
+        app:layout_constraintStart_toEndOf="@id/reset"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/value_holder"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="?selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:minWidth="50dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/button_holder"
+        app:layout_constraintStart_toEndOf="@id/seekbar"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/seekbar_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:maxLines="1"
+                android:paddingEnd="4dp"
+                android:paddingRight="4dp"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"
+                tools:text="100" />
+
+            <TextView
+                android:id="@+id/measurement_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="14sp"
+                tools:text="dp" />
+        </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@drawable/msbp_bottom_line" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/button_holder"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/value_holder">
+
+        <ImageView
+            android:id="@+id/up"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="center"
+            android:layout_weight="1"
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp" />
+
+        <ImageView
+            android:id="@+id/down"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:scaleType="center"
+            android:layout_weight="1"
+            android:tint="?android:textColorPrimary"
+            app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp" />
+
+
+    </LinearLayout>
+
+</tk.zwander.seekbarpreference.SeekBarView>
