@@ -1,19 +1,10 @@
 package tk.zwander.seekbarpreference
 
 import android.content.Context
-import android.graphics.Color
 import android.util.AttributeSet
-import android.util.Log
-import android.view.View
-import android.widget.TextView
-import androidx.annotation.IntegerRes
-import androidx.preference.DialogPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import kotlinx.android.synthetic.main.seekbar.view.*
-import tk.zwander.seekbarpreference.R.attr.*
-import tk.zwander.seekbarpreference.R.id.*
-import kotlin.math.max
 
 class SeekBarPreference : Preference {
     private var progressInternal = 0
@@ -75,7 +66,7 @@ class SeekBarPreference : Preference {
 
     private fun init(attributeSet: AttributeSet?) {
         isPersistent = true
-        layoutResource = R.layout.seekbar_view_layout
+        layoutResource = R.layout.seekbar_preference_layout
         widgetLayoutResource = R.layout.seekbar
 
         if (attributeSet != null) {
@@ -99,6 +90,8 @@ class SeekBarPreference : Preference {
                     }
                 }
             }
+
+            array.recycle()
         }
     }
 

@@ -15,13 +15,13 @@ import java.text.DecimalFormat
 import kotlin.math.min
 
 class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionChangeListener {
-    constructor(context: Context) : super(context)
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
+    constructor(context: Context) : super(context) { init(null) }
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) { init(attributeSet) }
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(
         context,
         attributeSet,
         defStyleAttr
-    )
+    ) { init(attributeSet) }
 
     val seekBar: Slider by lazy { findViewById<Slider>(R.id.seekbar) }
     val valueView: TextView by lazy { findViewById<TextView>(R.id.seekbar_value) }
@@ -33,17 +33,17 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
     val down: ImageView by lazy { findViewById<ImageView>(R.id.down) }
     val reset: ImageView by lazy { findViewById<ImageView>(R.id.reset) }
 
-    var units: String? = null
-    var defaultValue = 0
-    var minValue = 0
-    var maxValue = 100
-    var progress = 0
-    var scale = 1f
+    private var units: String? = null
+    private var defaultValue = 0
+    private var minValue = 0
+    private var maxValue = 100
+    private var progress = 0
+    private var scale = 1f
 
     var scaledProgress: Float
         get() = progress * scale
         set(value) {
-            progress = (progress / scale ).toInt()
+            setValue(progress / scale, true)
         }
 
     var dialogEnabled = true
@@ -56,6 +56,35 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
         }
 
     var listener: SeekBarListener? = null
+
+    private fun init(attributeSet: AttributeSet?) {
+        if (attributeSet != null) {
+            val array = context.theme.obtainStyledAttributes(attributeSet, R.styleable.SeekBarView, 0, 0)
+
+            var min = minValue
+            var max = maxValue
+            var scl = scale
+            var unt = units
+
+            for (i in 0 until array.length()) {
+                val a = array.getIndex(i)
+
+                when (a) {
+                    R.styleable.SeekBarView_minValue -> min = array.getInteger(a, minValue)
+                    R.styleable.SeekBarView_maxValue -> max = array.getInteger(a, maxValue)
+                    R.styleable.SeekBarView_scale -> scl = array.getFloat(a, scale)
+                    R.styleable.SeekBarView_units -> unt = array.getString(a)
+                    R.styleable.SeekBarView_defaultValue -> defaultValue = array.getInteger(a, defaultValue)
+                }
+            }
+
+            progress = defaultValue
+
+            View.inflate(context, R.layout.seekbar_guts, this)
+
+            onBind(min, max, progress, scl, unt)
+        } else View.inflate(context, R.layout.seekbar_guts, this)
+    }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
@@ -139,16 +168,20 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
     }
 
     fun setValue(value: Float, animate: Boolean) {
-        seekBar.setOnPositionChangeListener(null)
-        seekBar.setValue(value, true)
-        seekBar.setOnPositionChangeListener(this)
+        if (value.toInt() != progress && value >= minValue && value <= maxValue) {
+            seekBar.setOnPositionChangeListener(null)
+            seekBar.setValue(value, true)
+            seekBar.setOnPositionChangeListener(this)
 
-        progress = value.toInt()
+            progress = value.toInt()
 
-        valueView.text = formatProgress(progress * scale)
+            valueView.text = formatProgress(progress * scale)
 
-        updateFill(value.toInt())
+            updateFill(value.toInt())
+        }
     }
+
+    fun getCurrentProgress() = progress
 
     fun setValueRange(min: Int, max: Int, animate: Boolean) {
         seekBar.setValueRange(min, max, animate)

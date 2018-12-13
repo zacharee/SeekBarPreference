@@ -6,4 +6,12 @@
         <attr name="units" format="string|reference" />
         <attr name="scale" format="float|reference" />
     </declare-styleable>
+
+    <declare-styleable name="SeekBarView">
+        <attr name="minValue" format="integer|reference" />
+        <attr name="maxValue" format="integer|reference" />
+        <attr name="units" format="integer|reference" />
+        <attr name="scale" format="integer|reference" />
+        <attr name="defaultValue" format="integer|reference" />
+    </declare-styleable>
 </resources>
