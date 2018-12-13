@@ -1,5 +1,6 @@
 package tk.zwander.seekbarpreference
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import androidx.preference.Preference
@@ -7,25 +8,15 @@ import androidx.preference.PreferenceViewHolder
 import kotlinx.android.synthetic.main.seekbar.view.*
 
 class SeekBarPreference : Preference {
-    private var progressInternal = 0
-        set(value) {
-            if (field != value
-                && value >= minValue && value <= maxValue
-            ) {
-                field = value
-                persistInt(value)
-            }
-        }
-
     var minValue = 0
         set(value) {
             field = value
-            if (progress < value) progress = value
+            notifyChanged()
         }
     var maxValue = 100
         set(value) {
             field = value
-            if (progress > value) progress = value
+            notifyChanged()
         }
     var scale = 1f
     var units: String? = null
@@ -34,15 +25,14 @@ class SeekBarPreference : Preference {
             notifyChanged()
         }
     var progress: Int
-        get() = progressInternal
+        get() = getPersistedInt(defaultValue)
         set(value) {
-            if (progressInternal != value
+            if (progress != value
                 && value >= minValue && value <= maxValue
             ) {
-                progressInternal = value
-                notifyChanged()
                 callChangeListener(value)
                 persistInt(value)
+                notifyChanged()
             }
         }
     var scaledProgress: Float
@@ -51,10 +41,12 @@ class SeekBarPreference : Preference {
             progress = (value / scale).toInt()
         }
 
-    val defaultValue: Any?
-        get() = Preference::class.java.getDeclaredField("mDefaultValue")
-            .apply { isAccessible = true }
-            .get(this)
+    var defaultValue = 0
+        set(value) {
+            field = value
+            super.setDefaultValue(value)
+            notifyChanged()
+        }
 
     constructor(context: Context) : super(context) {
         init(null)
@@ -64,12 +56,19 @@ class SeekBarPreference : Preference {
         init(attributeSet)
     }
 
+    @SuppressLint("PrivateResource")
     private fun init(attributeSet: AttributeSet?) {
         isPersistent = true
         layoutResource = R.layout.seekbar_preference_layout
         widgetLayoutResource = R.layout.seekbar
 
         if (attributeSet != null) {
+            val defArray = context.theme.obtainStyledAttributes(attributeSet, R.styleable.Preference, 0, 0)
+
+            defaultValue = defArray.getInteger(R.styleable.Preference_android_defaultValue, defaultValue)
+
+            defArray.recycle()
+
             val array = context.theme.obtainStyledAttributes(attributeSet, R.styleable.SeekBarPreference, 0, 0)
 
             for (i in 0 until array.length()) {
@@ -95,38 +94,26 @@ class SeekBarPreference : Preference {
         }
     }
 
-    override fun onSetInitialValue(defaultValue: Any?) {
-        progressInternal = if (isPersistent) getPersistedInt(defaultValue?.toString()?.toInt() ?: return)
-        else defaultValue?.toString()?.toInt() ?: return
+    override fun onAttached() {
+        super.onAttached()
+
+        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener { prefs, key ->
+            when (key) {
+                this.key -> {
+                    callChangeListener(progress)
+                }
+            }
+        }
     }
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        progressInternal = getPersistedInt(defaultValue?.toString()?.toInt() ?: progressInternal)
+        val seekbar = holder.itemView.seekbar_root as SeekBarView
+        seekbar.onBind(minValue, maxValue, progress, defaultValue, scale, units, key)
+    }
 
-        (holder.itemView.seekbar_root as SeekBarView).apply {
-            onBind(minValue, maxValue, progress, scale, units)
-            listener = object : SeekBarView.SeekBarListener {
-                override fun onProgressAdded() {
-                    this@SeekBarPreference.progress++
-                    setValue(progress.toFloat(), true)
-                }
-
-                override fun onProgressSubtracted() {
-                    this@SeekBarPreference.progress--
-                    setValue(progress.toFloat(), true)
-                }
-
-                override fun onProgressReset() {
-                    this@SeekBarPreference.progress = defaultValue?.toString()?.toInt() ?: this@SeekBarPreference.minValue
-                }
-
-                override fun onProgressChanged(newValue: Int) {
-                    progressInternal = newValue
-                    callChangeListener(progressInternal)
-                }
-            }
-        }
+    override fun setDefaultValue(defaultValue: Any?) {
+        this.defaultValue = defaultValue?.toString()?.toInt() ?: return
     }
 }
