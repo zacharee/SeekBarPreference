@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">SeekBarPreference</string>
 
-    <string name="errors.must_be_between">Must be between</string>
-    <string name="errors.and">And</string>
+    <string name="must_be_between">Must be between</string>
+    <string name="and">And</string>
     <string name="enter_custom_value">Enter custom value</string>
     <string name="apply">apply</string>
+    <string name="bad_input">Bad input!</string>
 </resources>

@@ -1,64 +1,43 @@
 package tk.zwander.seekbarpreference
 
-import android.app.Dialog
 import android.content.Context
-import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import kotlinx.android.synthetic.main.value_selector_dialog.view.*
 import java.text.DecimalFormat
 
 class CustomInputDialog(
-    context: Context,
+    private val context: Context,
     minValue: Int,
     maxValue: Int,
-    currentValue: Int,
+    unscaledCurrent: Int,
     private val scale: Float,
     private val listener: ((progress: Int) -> Unit)? = null
 ) {
-
-    private val TAG = javaClass.simpleName
-
-    private var dialog: Dialog? = null
-    private var customValueView: EditText? = null
-
     private val minValue = minValue * scale
     private val maxValue = maxValue * scale
-    private val currentValue = currentValue * scale
+    private val currentValue = unscaledCurrent * scale
+
+    private val dialogView = LayoutInflater.from(context)
+        .inflate(R.layout.value_selector_dialog, null)
+
+    private val dialog = AlertDialog.Builder(context)
+        .setView(dialogView)
+        .create()
 
     init {
-        init(AlertDialog.Builder(context))
+        dialogView.minValue.text = formatValue(minValue.toString())
+        dialogView.maxValue.text = formatValue(maxValue.toString())
+        dialogView.customValue.hint = formatValue(currentValue.toString())
+
+        dialogView.dialog_color_area.setBackgroundColor(fetchAccentColor())
+
+        dialogView.btn_apply.setOnClickListener { tryApply() }
+        dialogView.btn_cancel.setOnClickListener { dialog?.dismiss() }
     }
 
-    private fun init(dialogBuilder: AlertDialog.Builder) {
-        val dialogView = LayoutInflater.from(dialogBuilder.context).inflate(R.layout.value_selector_dialog, null)
-        dialog = dialogBuilder.setView(dialogView).create()
-
-        val minValueView = dialogView.findViewById<TextView>(R.id.minValue)
-        val maxValueView = dialogView.findViewById<TextView>(R.id.maxValue)
-        customValueView = dialogView.findViewById(R.id.customValue)
-
-        minValueView.text = formatValue(minValue.toString())
-        maxValueView.text = formatValue(maxValue.toString())
-        customValueView?.hint = formatValue(currentValue.toString())
-
-        val colorView = dialogView.findViewById<LinearLayout>(R.id.dialog_color_area)
-        colorView.setBackgroundColor(fetchAccentColor(dialogBuilder.context))
-
-        val applyButton = dialogView.findViewById<Button>(R.id.btn_apply)
-        val cancelButton = dialogView.findViewById<Button>(R.id.btn_cancel)
-
-        applyButton.setOnClickListener { tryApply() }
-
-        cancelButton.setOnClickListener { dialog?.dismiss() }
-    }
-
-    private fun fetchAccentColor(context: Context): Int {
+    private fun fetchAccentColor(): Int {
         val typedValue = TypedValue()
 
         val a = context.obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorAccent))
@@ -76,18 +55,16 @@ class CustomInputDialog(
         val value: Float
 
         try {
-            value = java.lang.Float.parseFloat(customValueView!!.text.toString())
+            value = dialogView.customValue.text.toString().toFloat()
+
             if (value > maxValue) {
-                Log.e(TAG, "wrong input( > than required): " + customValueView!!.text.toString())
                 notifyWrongInput()
                 return
             } else if (value < minValue) {
-                Log.e(TAG, "wrong input( < then required): " + customValueView!!.text.toString())
                 notifyWrongInput()
                 return
             }
         } catch (e: Exception) {
-            Log.e(TAG, "wrong input(non-integer): " + customValueView!!.text.toString())
             notifyWrongInput()
             return
         }
@@ -97,8 +74,10 @@ class CustomInputDialog(
     }
 
     private fun notifyWrongInput() {
-        customValueView!!.setText("")
-        customValueView!!.hint = "Wrong Input!"
+        with (dialogView.customValue) {
+            text = null
+            hint = context.resources.getString(R.string.bad_input)
+        }
     }
 
     private fun formatValue(value: String): String {
