@@ -110,7 +110,7 @@ class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceChange
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
             this.key -> {
-                callChangeListener(progress)
+                callChangeListener(scaledProgress)
             }
         }
     }
