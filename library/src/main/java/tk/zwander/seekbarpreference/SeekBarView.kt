@@ -136,12 +136,18 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
             }
                 .show()
             v.id == R.id.up -> {
-                listener?.onProgressAdded()
-                setValue(progress + 1f, true)
+                val newValue = progress++
+                if (newValue <= maxValue) {
+                    listener?.onProgressAdded()
+                    setValue(newValue.toFloat(), true)
+                }
             }
             v.id == R.id.down -> {
-                listener?.onProgressSubtracted()
-                setValue(progress - 1f, true)
+                val newValue = progress--
+                if (newValue >= minValue) {
+                    listener?.onProgressSubtracted()
+                    setValue(newValue.toFloat(), true)
+                }
             }
             v.id == R.id.reset -> {
                 listener?.onProgressReset()
