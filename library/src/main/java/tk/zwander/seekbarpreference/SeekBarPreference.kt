@@ -2,12 +2,13 @@ package tk.zwander.seekbarpreference
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.AttributeSet
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import kotlinx.android.synthetic.main.seekbar.view.*
 
-class SeekBarPreference : Preference {
+class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceChangeListener {
     var minValue = 0
         set(value) {
             field = value
@@ -97,11 +98,19 @@ class SeekBarPreference : Preference {
     override fun onAttached() {
         super.onAttached()
 
-        preferenceManager.sharedPreferences.unregisterOnSharedPreferenceChangeListener { prefs, key ->
-            when (key) {
-                this.key -> {
-                    callChangeListener(progress)
-                }
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onDetached() {
+        super.onDetached()
+
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        when (key) {
+            this.key -> {
+                callChangeListener(progress)
             }
         }
     }
@@ -110,7 +119,7 @@ class SeekBarPreference : Preference {
         super.onBindViewHolder(holder)
 
         val seekbar = holder.itemView.seekbar_root as SeekBarView
-        seekbar.onBind(minValue, maxValue, progress, defaultValue, scale, units, key)
+        seekbar.onBind(minValue, maxValue, progress, defaultValue, scale, units, key, null, sharedPreferences)
     }
 
     override fun setDefaultValue(defaultValue: Any?) {

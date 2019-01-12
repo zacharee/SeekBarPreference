@@ -1,6 +1,7 @@
 package tk.zwander.seekbarpreference
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -68,11 +69,13 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
             bottomLineView.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
-    var listener: SeekBarListener? = null
+    private var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private var listener: SeekBarListener? = null
 
     private fun init(attributeSet: AttributeSet?) {
         if (attributeSet != null) {
             val array = context.theme.obtainStyledAttributes(attributeSet, R.styleable.SeekBarView, 0, 0)
+            val prefArray = context.theme.obtainStyledAttributes(attributeSet, R.styleable.SeekBarPreference, 0, 0)
 
             var min = minValue
             var max = maxValue
@@ -83,11 +86,18 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
                 val a = array.getIndex(i)
 
                 when (a) {
+                    R.styleable.SeekBarView_view_defaultValue -> defaultValue = array.getInteger(a, defaultValue)
+                }
+            }
+
+            for (i in 0 until prefArray.length()) {
+                val a = prefArray.getIndex(i)
+
+                when (a) {
                     R.styleable.SeekBarPreference_minValue -> min = array.getInteger(a, minValue)
                     R.styleable.SeekBarPreference_maxValue -> max = array.getInteger(a, maxValue)
                     R.styleable.SeekBarPreference_scale -> scl = array.getFloat(a, scale)
                     R.styleable.SeekBarPreference_units -> unt = array.getString(a)
-                    R.styleable.SeekBarView_view_defaultValue -> defaultValue = array.getInteger(a, defaultValue)
                 }
             }
 
@@ -95,7 +105,7 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
 
             View.inflate(context, R.layout.seekbar_guts, this)
 
-            onBind(min, max, progress, defaultValue, scl, unt, key)
+            onBind(min, max, progress, defaultValue, scl, unt, "", null)
         } else View.inflate(context, R.layout.seekbar_guts, this)
     }
 
@@ -172,7 +182,15 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
         reset.isEnabled = enabled
     }
 
-    fun onBind(minValue: Int, maxValue: Int, progress: Int, defaultValue: Int, scale: Float, units: String?, key: String) {
+    fun onBind(minValue: Int,
+               maxValue: Int,
+               progress: Int,
+               defaultValue: Int,
+               scale: Float,
+               units: String?,
+               key: String,
+               listener: SeekBarListener?,
+               prefs: SharedPreferences = sharedPreferences) {
         this.key = key
         this.progress = progress
         this.minValue = minValue
@@ -180,6 +198,8 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
         this.defaultValue = defaultValue
         this.units = units
         this.scale = scale
+        this.listener = listener
+        this.sharedPreferences = prefs
 
         seekBar.setValueRange(minValue, maxValue, false)
         setValue(progress.toFloat(), false)
@@ -220,7 +240,8 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
     }
 
     private fun persistProgress(progress: Int) {
-        if (!key.isBlank()) PreferenceManager.getDefaultSharedPreferences(context)
+        if (key.isNotBlank())
+            sharedPreferences
                 .edit()
                 .putInt(key, progress)
                 .apply()
