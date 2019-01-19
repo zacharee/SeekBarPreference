@@ -94,10 +94,10 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
                 val a = prefArray.getIndex(i)
 
                 when (a) {
-                    R.styleable.SeekBarPreference_minValue -> min = array.getInteger(a, minValue)
-                    R.styleable.SeekBarPreference_maxValue -> max = array.getInteger(a, maxValue)
-                    R.styleable.SeekBarPreference_scale -> scl = array.getFloat(a, scale)
-                    R.styleable.SeekBarPreference_units -> unt = array.getString(a)
+                    R.styleable.SeekBarPreference_minValue -> min = prefArray.getInteger(a, minValue)
+                    R.styleable.SeekBarPreference_maxValue -> max = prefArray.getInteger(a, maxValue)
+                    R.styleable.SeekBarPreference_scale -> scl = prefArray.getFloat(a, scale)
+                    R.styleable.SeekBarPreference_units -> unt = prefArray.getString(a)
                 }
             }
 
@@ -106,6 +106,9 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
             View.inflate(context, R.layout.seekbar_guts, this)
 
             onBind(min, max, progress, defaultValue, scl, unt, "", null)
+
+            array.recycle()
+            prefArray.recycle()
         } else View.inflate(context, R.layout.seekbar_guts, this)
     }
 
