@@ -6,16 +6,13 @@ import android.preference.PreferenceManager
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
 import com.rey.material.widget.Slider
+import kotlinx.android.synthetic.main.seekbar_guts.view.*
 import java.text.DecimalFormat
 
-class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionChangeListener {
+open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionChangeListener {
     constructor(context: Context) : super(context) { init(null) }
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) { init(attributeSet) }
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(
@@ -23,16 +20,6 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
         attributeSet,
         defStyleAttr
     ) { init(attributeSet) }
-
-    val seekBar: Slider by lazy { findViewById<Slider>(R.id.seekbar) }
-    val valueView: TextView by lazy { findViewById<TextView>(R.id.seekbar_value) }
-    val measurementView: TextView by lazy { findViewById<TextView>(R.id.measurement_unit) }
-    val valueHolderView: LinearLayout by lazy { findViewById<LinearLayout>(R.id.value_holder) }
-    val buttonHolderView: LinearLayout by lazy { findViewById<LinearLayout>(R.id.button_holder) }
-    val bottomLineView: FrameLayout by lazy { findViewById<FrameLayout>(R.id.bottom_line) }
-    val up: ImageView by lazy { findViewById<ImageView>(R.id.up) }
-    val down: ImageView by lazy { findViewById<ImageView>(R.id.down) }
-    val reset: ImageView by lazy { findViewById<ImageView>(R.id.reset) }
 
     var units: String? = null
     var defaultValue = 0
@@ -63,10 +50,10 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
     var dialogEnabled = true
         set(value) {
             field = value
-            valueHolderView.isClickable = value
-            valueHolderView.isEnabled = value
-            valueHolderView.setOnClickListener(if (value) this else null)
-            bottomLineView.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            value_holder.isClickable = value
+            value_holder.isEnabled = value
+            value_holder.setOnClickListener(if (value) this else null)
+            bottom_line.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
     private var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -110,6 +97,8 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
             array.recycle()
             prefArray.recycle()
         } else View.inflate(context, R.layout.seekbar_guts, this)
+
+        onFinishInflate()
     }
 
     override fun onFinishInflate() {
@@ -119,18 +108,18 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
         val color = colorAttr.getColor(0, 0)
         colorAttr.recycle()
 
-        seekBar.setPrimaryColor(color)
-        seekBar.setSecondaryColor(ColorUtils.setAlphaComponent(color, 0x33))
+        seekbar.setPrimaryColor(color)
+        seekbar.setSecondaryColor(ColorUtils.setAlphaComponent(color, 0x33))
 
         up.setOnClickListener(this)
         down.setOnClickListener(this)
         reset.setOnClickListener(this)
-        valueHolderView.setOnClickListener(this)
+        value_holder.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
-        when {
-            v.id == R.id.value_holder -> CustomInputDialog(
+        when(v.id) {
+            R.id.value_holder -> CustomInputDialog(
                 context, minValue,
                 maxValue, progress, scale
             ) { value ->
@@ -138,21 +127,21 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
                 setValue(value.toFloat(), true)
             }
                 .show()
-            v.id == R.id.up -> {
+            R.id.up -> {
                 val newValue = progress + 1
                 if (newValue <= maxValue) {
                     listener?.onProgressAdded()
                     setValue(newValue.toFloat(), true)
                 }
             }
-            v.id == R.id.down -> {
+            R.id.down -> {
                 val newValue = progress - 1
                 if (newValue >= minValue) {
                     listener?.onProgressSubtracted()
                     setValue(newValue.toFloat(), true)
                 }
             }
-            v.id == R.id.reset -> {
+            R.id.reset -> {
                 listener?.onProgressReset()
                 setValue(defaultValue.toFloat(), true)
             }
@@ -169,23 +158,23 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
     ) {
         this.progress = newValue
         listener?.onProgressChanged(newValue, newValue * scale)
-        valueView.text = formatProgress(newValue * scale)
+        seekbar_value.text = formatProgress(newValue * scale)
 
         updateFill(newValue)
     }
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
-        valueView.isEnabled = enabled
-        valueHolderView.isClickable = enabled
-        valueHolderView.isEnabled = enabled
+        seekbar_value.isEnabled = enabled
+        value_holder.isClickable = enabled
+        value_holder.isEnabled = enabled
 
-        seekBar.isEnabled = enabled
-        seekBar.isClickable = enabled
+        seekbar.isEnabled = enabled
+        seekbar.isClickable = enabled
 
-        measurementView.isEnabled = enabled
-        bottomLineView.isEnabled = enabled
-        buttonHolderView.isEnabled = enabled
+        measurement_unit.isEnabled = enabled
+        bottom_line.isEnabled = enabled
+        button_holder.isEnabled = enabled
         up.isEnabled = enabled
         down.isEnabled = enabled
         reset.isEnabled = enabled
@@ -210,19 +199,19 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
         this.listener = listener
         this.sharedPreferences = prefs
 
-        seekBar.setValueRange(minValue, maxValue, false)
+        seekbar.setValueRange(minValue, maxValue, false)
         setValue(progress.toFloat(), false)
-        seekBar.setOnPositionChangeListener(this)
+        seekbar.setOnPositionChangeListener(this)
     }
 
     fun setValue(value: Float, animate: Boolean) {
-        seekBar.setOnPositionChangeListener(null)
-        seekBar.setValue(value, true)
-        seekBar.setOnPositionChangeListener(this)
+        seekbar.setOnPositionChangeListener(null)
+        seekbar.setValue(value, true)
+        seekbar.setOnPositionChangeListener(this)
 
         progress = if (value > maxValue) maxValue else if (value < minValue) minValue else value.toInt()
 
-        valueView.text = formatProgress(value * scale)
+        seekbar_value.text = formatProgress(value * scale)
 
         updateFill(value.toInt())
     }
@@ -232,15 +221,15 @@ class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionCha
     fun setValueRange(min: Int, max: Int, animate: Boolean) {
         minValue = min
         maxValue = max
-        seekBar.setValueRange(min, max, animate)
+        seekbar.setValueRange(min, max, animate)
     }
 
     private fun updateFill(value: Int) {
-        if (!seekBar.isThumbStrokeAnimatorRunning) {
+        if (!seekbar.isThumbStrokeAnimatorRunning) {
             if (value == defaultValue)
-                seekBar.setThumbFillPercent(0)
+                seekbar.setThumbFillPercent(0)
             else
-                seekBar.setThumbFillPercent(1)
+                seekbar.setThumbFillPercent(1)
         }
     }
 

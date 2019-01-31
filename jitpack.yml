@@ -1,0 +1,2 @@
+before_install:
+  - curl https://gist.githubusercontent.com/zacharee/d2abcf1c1248cd7a3e9f6148d6ef733c/raw/3f75515cd84e5e8b5e39414d146c3ff755bd4402/accept_jitpack_license.sh | sh
