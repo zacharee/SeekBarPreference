@@ -27,8 +27,8 @@ class CustomInputDialog(
         .create()
 
     init {
-        dialogView.minValue.text = formatValue(minValue.toString())
-        dialogView.maxValue.text = formatValue(maxValue.toString())
+        dialogView.minValue.text = formatValue(this.minValue.toString())
+        dialogView.maxValue.text = formatValue(this.maxValue.toString())
         dialogView.customValue.hint = formatValue(currentValue.toString())
 
         dialogView.dialog_color_area.setBackgroundColor(fetchAccentColor())
