@@ -4,6 +4,4 @@
     android:id="@+id/seekbar_root"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
     android:gravity="center_vertical" />

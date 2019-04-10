@@ -69,7 +69,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
             var scl = scale
             var unt = units
 
-            for (i in 0 until array.length()) {
+            for (i in 0 until array.indexCount) {
                 val a = array.getIndex(i)
 
                 when (a) {
@@ -77,7 +77,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
                 }
             }
 
-            for (i in 0 until prefArray.length()) {
+            for (i in 0 until prefArray.indexCount) {
                 val a = prefArray.getIndex(i)
 
                 when (a) {
