@@ -3,7 +3,7 @@ package tk.zwander.seekbarpreference
 import android.content.Context
 import android.util.TypedValue
 import android.view.LayoutInflater
-import androidx.appcompat.app.AlertDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.value_selector_dialog.view.*
 import java.text.DecimalFormat
 
@@ -22,7 +22,7 @@ class CustomInputDialog(
     private val dialogView = LayoutInflater.from(context)
         .inflate(R.layout.value_selector_dialog, null)
 
-    private val dialog = AlertDialog.Builder(context)
+    private val dialog = MaterialAlertDialogBuilder(context)
         .setView(dialogView)
         .create()
 
