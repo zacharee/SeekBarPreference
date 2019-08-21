@@ -34,7 +34,7 @@ class CustomInputDialog(
         dialogView.dialog_color_area.setBackgroundColor(fetchAccentColor())
 
         dialogView.btn_apply.setOnClickListener { tryApply() }
-        dialogView.btn_cancel.setOnClickListener { dialog?.dismiss() }
+        dialogView.btn_cancel.setOnClickListener { dialog.dismiss() }
     }
 
     private fun fetchAccentColor(): Int {
@@ -48,7 +48,7 @@ class CustomInputDialog(
     }
 
     fun show() {
-        dialog?.show()
+        dialog.show()
     }
 
     private fun tryApply() {
@@ -70,7 +70,7 @@ class CustomInputDialog(
         }
 
         listener?.invoke((value / scale).toInt())
-        dialog?.dismiss()
+        dialog.dismiss()
     }
 
     private fun notifyWrongInput() {
