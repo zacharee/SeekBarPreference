@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="minValue" format="integer|reference" />
+    <attr name="maxValue" format="integer|reference" />
+    <attr name="units" format="string|reference" />
+    <attr name="scale" format="float|reference" />
+
     <declare-styleable name="SeekBarPreference">
-        <attr name="minValue" format="integer|reference" />
-        <attr name="maxValue" format="integer|reference" />
-        <attr name="units" format="string|reference" />
-        <attr name="scale" format="float|reference" />
+        <attr name="minValue" />
+        <attr name="maxValue" />
+        <attr name="units" />
+        <attr name="scale" />
     </declare-styleable>
 
     <declare-styleable name="SeekBarView">
+        <attr name="minValue" />
+        <attr name="maxValue" />
+        <attr name="units" />
+        <attr name="scale" />
+        <attr name="isPreference" format="boolean|reference" />
         <attr name="view_defaultValue" format="integer|reference" />
     </declare-styleable>
 </resources>

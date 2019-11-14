@@ -65,7 +65,6 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
     private fun init(attributeSet: AttributeSet?) {
         if (attributeSet != null) {
             val array = context.theme.obtainStyledAttributes(attributeSet, R.styleable.SeekBarView, 0, 0)
-            val prefArray = context.theme.obtainStyledAttributes(attributeSet, R.styleable.SeekBarPreference, 0, 0)
 
             var min = minValue
             var max = maxValue
@@ -73,32 +72,31 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
             var unt = units
 
             for (i in 0 until array.indexCount) {
-                val a = array.getIndex(i)
-
-                when (a) {
+                when (val a = array.getIndex(i)) {
                     R.styleable.SeekBarView_view_defaultValue -> defaultValue = array.getInteger(a, defaultValue)
                 }
             }
 
-            for (i in 0 until prefArray.indexCount) {
-                val a = prefArray.getIndex(i)
-
-                when (a) {
-                    R.styleable.SeekBarPreference_minValue -> min = prefArray.getInteger(a, minValue)
-                    R.styleable.SeekBarPreference_maxValue -> max = prefArray.getInteger(a, maxValue)
-                    R.styleable.SeekBarPreference_scale -> scl = prefArray.getFloat(a, scale)
-                    R.styleable.SeekBarPreference_units -> unt = prefArray.getString(a)
+            for (i in 0 until array.indexCount) {
+                when (val a = array.getIndex(i)) {
+                    R.styleable.SeekBarView_minValue -> min = array.getInteger(a, minValue)
+                    R.styleable.SeekBarView_maxValue -> max = array.getInteger(a, maxValue)
+                    R.styleable.SeekBarView_scale -> scl = array.getFloat(a, scale)
+                    R.styleable.SeekBarView_units -> unt = array.getString(a)
                 }
             }
+
+            val isPref = array.getBoolean(R.styleable.SeekBarView_isPreference, false)
 
             _progress = defaultValue
 
             View.inflate(context, R.layout.seekbar_guts, this)
 
-            onBind(min, max, progress, defaultValue, scl, unt, "", null)
+            if (!isPref) {
+                onBind(min, max, progress, defaultValue, scl, unt, "", null)
+            }
 
             array.recycle()
-            prefArray.recycle()
         } else View.inflate(context, R.layout.seekbar_guts, this)
 
         onFinishInflate()
