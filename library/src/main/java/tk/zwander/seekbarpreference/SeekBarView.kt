@@ -33,9 +33,12 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
             field = value
             if (progress > value) progress = value
         }
-    private var progress = 0
+
+    private var _progress = 0
+    private var progress: Int
+        get() = _progress
         set(value) {
-            field = value
+            _progress = value
             persistProgress(value)
         }
     private var key: String = ""
@@ -88,7 +91,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
                 }
             }
 
-            progress = defaultValue
+            _progress = defaultValue
 
             View.inflate(context, R.layout.seekbar_guts, this)
 
@@ -190,7 +193,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
                listener: SeekBarListener?,
                prefs: SharedPreferences = sharedPreferences) {
         this.key = key
-        this.progress = progress
+        this._progress = progress
         this.minValue = minValue
         this.maxValue = maxValue
         this.defaultValue = defaultValue
