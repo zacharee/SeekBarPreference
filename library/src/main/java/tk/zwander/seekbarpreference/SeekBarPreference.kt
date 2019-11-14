@@ -31,7 +31,7 @@ open class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceC
             if (progress != value
                 && value >= minValue && value <= maxValue
             ) {
-                callChangeListener(value)
+                callChangeListener(value * scale)
                 persistInt(value)
                 notifyChanged()
             }
