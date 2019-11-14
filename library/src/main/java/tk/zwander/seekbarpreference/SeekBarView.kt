@@ -132,6 +132,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
                 val newValue = progress + 1
                 if (newValue <= maxValue) {
                     listener?.onProgressAdded()
+                    listener?.onProgressChanged(newValue, newValue * scale)
                     setValue(newValue.toFloat(), true)
                 }
             }
@@ -139,11 +140,13 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
                 val newValue = progress - 1
                 if (newValue >= minValue) {
                     listener?.onProgressSubtracted()
+                    listener?.onProgressChanged(newValue, newValue * scale)
                     setValue(newValue.toFloat(), true)
                 }
             }
             R.id.reset -> {
                 listener?.onProgressReset()
+                listener?.onProgressChanged(defaultValue, defaultValue * scale)
                 setValue(defaultValue.toFloat(), true)
             }
         }
