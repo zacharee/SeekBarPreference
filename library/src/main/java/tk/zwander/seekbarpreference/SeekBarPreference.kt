@@ -8,7 +8,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
 import kotlinx.android.synthetic.main.seekbar.view.*
 
-class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceChangeListener {
+open class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceChangeListener {
     var minValue = 0
         set(value) {
             field = value

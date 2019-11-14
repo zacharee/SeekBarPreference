@@ -7,7 +7,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.value_selector_dialog.view.*
 import java.text.DecimalFormat
 
-class CustomInputDialog(
+open class CustomInputDialog(
     private val context: Context,
     minValue: Int,
     maxValue: Int,
