@@ -60,7 +60,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
         }
 
     private var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-    private var listener: SeekBarListener? = null
+    var listener: SeekBarListener? = null
 
     private fun init(attributeSet: AttributeSet?) {
         if (attributeSet != null) {
