@@ -13,6 +13,7 @@ open class CustomInputDialog(
     maxValue: Int,
     unscaledCurrent: Int,
     private val scale: Float,
+    private val style: Int,
     private val listener: ((progress: Int) -> Unit)? = null
 ) {
     private val minValue = minValue * scale
@@ -25,6 +26,11 @@ open class CustomInputDialog(
     private val dialog = MaterialAlertDialogBuilder(context)
         .setView(dialogView)
         .create()
+        .apply {
+            if (style != 0) {
+                window.setTheme(style)
+            }
+        }
 
     init {
         dialogView.minValue.text = formatValue(this.minValue.toString())

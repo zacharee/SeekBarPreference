@@ -49,6 +49,8 @@ open class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceC
             notifyChanged()
         }
 
+    var dialogStyle = 0
+
     constructor(context: Context) : super(context) {
         init(null)
     }
@@ -73,9 +75,7 @@ open class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceC
             val array = context.theme.obtainStyledAttributes(attributeSet, R.styleable.SeekBarPreference, 0, 0)
 
             for (i in 0 until array.length()) {
-                val a = array.getIndex(i)
-
-                when (a) {
+                when (val a = array.getIndex(i)) {
                     R.styleable.SeekBarPreference_minValue -> {
                         minValue = array.getInteger(a, minValue)
                     }
@@ -87,6 +87,9 @@ open class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceC
                     }
                     R.styleable.SeekBarPreference_scale -> {
                         scale = array.getFloat(a, scale)
+                    }
+                    R.styleable.SeekBarPreference_dialogStyle -> {
+                        dialogStyle = array.getInt(a, dialogStyle)
                     }
                 }
             }
@@ -119,7 +122,7 @@ open class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceC
         super.onBindViewHolder(holder)
 
         val seekbar = holder.itemView.seekbar_root as SeekBarView
-        seekbar.onBind(minValue, maxValue, progress, defaultValue, scale, units, key, null, sharedPreferences)
+        seekbar.onBind(minValue, maxValue, progress, defaultValue, scale, units, key, dialogStyle, null, sharedPreferences)
     }
 
     override fun setDefaultValue(defaultValue: Any?) {
