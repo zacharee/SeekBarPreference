@@ -26,6 +26,9 @@ open class CustomInputDialog(
     private val dialog = MaterialAlertDialogBuilder(context, style)
         .setView(dialogView)
         .create()
+        .apply {
+            window.setWindowAnimations(style)
+        }
 
     init {
         dialogView.minValue.text = formatValue(this.minValue.toString())
