@@ -13,7 +13,6 @@ open class CustomInputDialog(
     maxValue: Int,
     unscaledCurrent: Int,
     private val scale: Float,
-    private val style: Int,
     private val listener: ((progress: Int) -> Unit)? = null
 ) {
     private val minValue = minValue * scale
@@ -23,7 +22,7 @@ open class CustomInputDialog(
     private val dialogView = LayoutInflater.from(context)
         .inflate(R.layout.value_selector_dialog, null)
 
-    private val dialog = BottomSheetDialog(context, style).apply {
+    private val dialog = BottomSheetDialog(context).apply {
         setContentView(dialogView)
     }
 

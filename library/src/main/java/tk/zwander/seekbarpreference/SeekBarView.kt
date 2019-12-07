@@ -59,8 +59,6 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
             bottom_line.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
-    var dialogStyle = 0
-
     private var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     var listener: SeekBarListener? = null
 
@@ -72,7 +70,6 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
             var max = maxValue
             var scl = scale
             var unt = units
-            var style = dialogStyle
 
             for (i in 0 until array.indexCount) {
                 when (val a = array.getIndex(i)) {
@@ -86,7 +83,6 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
                     R.styleable.SeekBarView_maxValue -> max = array.getInteger(a, maxValue)
                     R.styleable.SeekBarView_scale -> scl = array.getFloat(a, scale)
                     R.styleable.SeekBarView_units -> unt = array.getString(a)
-                    R.styleable.SeekBarView_dialogStyle -> style = array.getInt(a, style)
                 }
             }
 
@@ -97,7 +93,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
             View.inflate(context, R.layout.seekbar_guts, this)
 
             if (!isPref) {
-                onBind(min, max, progress, defaultValue, scl, unt, "", style, null)
+                onBind(min, max, progress, defaultValue, scl, unt, "", null)
             }
 
             array.recycle()
@@ -126,8 +122,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
         when(v.id) {
             R.id.value_holder -> CustomInputDialog(
                 context, minValue,
-                maxValue, progress, scale,
-                dialogStyle
+                maxValue, progress, scale
             ) { value ->
                 listener?.onProgressChanged(value, value * scale)
                 setValue(value.toFloat(), true)
@@ -196,7 +191,6 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
                scale: Float,
                units: String?,
                key: String,
-               style: Int,
                listener: SeekBarListener?,
                prefs: SharedPreferences = sharedPreferences) {
         this.key = key
@@ -208,7 +202,6 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
         this.scale = scale
         this.listener = listener
         this.sharedPreferences = prefs
-        this.dialogStyle = style
 
         seekbar.setValueRange(minValue, maxValue, false)
         setValue(progress.toFloat(), false)

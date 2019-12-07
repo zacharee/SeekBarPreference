@@ -4,14 +4,12 @@
     <attr name="maxValue" format="integer|reference" />
     <attr name="units" format="string|reference" />
     <attr name="scale" format="float|reference" />
-    <attr name="dialogStyle" format="integer|reference" />
 
     <declare-styleable name="SeekBarPreference">
         <attr name="minValue" />
         <attr name="maxValue" />
         <attr name="units" />
         <attr name="scale" />
-        <attr name="dialogStyle" />
     </declare-styleable>
 
     <declare-styleable name="SeekBarView">
@@ -19,7 +17,6 @@
         <attr name="maxValue" />
         <attr name="units" />
         <attr name="scale" />
-        <attr name="dialogStyle" />
         <attr name="isPreference" format="boolean|reference" />
         <attr name="view_defaultValue" format="integer|reference" />
     </declare-styleable>
