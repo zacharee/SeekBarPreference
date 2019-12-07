@@ -2,9 +2,8 @@ package tk.zwander.seekbarpreference
 
 import android.content.Context
 import android.util.TypedValue
-import android.view.LayoutInflater
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.value_selector_dialog.view.*
+import kotlinx.android.synthetic.main.value_selector_dialog.*
 import java.text.DecimalFormat
 
 open class CustomInputDialog(
@@ -19,22 +18,19 @@ open class CustomInputDialog(
     private val maxValue = maxValue * scale
     private val currentValue = unscaledCurrent * scale
 
-    private val dialogView = LayoutInflater.from(context)
-        .inflate(R.layout.value_selector_dialog, null)
-
     private val dialog = BottomSheetDialog(context).apply {
-        setContentView(dialogView)
+        setContentView(R.layout.value_selector_dialog)
     }
 
     init {
-        dialogView.minValue.text = formatValue(this.minValue.toString())
-        dialogView.maxValue.text = formatValue(this.maxValue.toString())
-        dialogView.customValue.hint = formatValue(currentValue.toString())
+        dialog.minValue.text = formatValue(this.minValue.toString())
+        dialog.maxValue.text = formatValue(this.maxValue.toString())
+        dialog.customValue.hint = formatValue(currentValue.toString())
 
-        dialogView.dialog_color_area.setBackgroundColor(fetchAccentColor())
+//        dialog.dialog_color_area.setBackgroundColor(fetchAccentColor())
 
-        dialogView.btn_apply.setOnClickListener { tryApply() }
-        dialogView.btn_cancel.setOnClickListener { dialog.dismiss() }
+        dialog.btn_apply.setOnClickListener { tryApply() }
+        dialog.btn_cancel.setOnClickListener { dialog.dismiss() }
     }
 
     private fun fetchAccentColor(): Int {
@@ -55,7 +51,7 @@ open class CustomInputDialog(
         val value: Float
 
         try {
-            value = dialogView.customValue.text.toString().toFloat()
+            value = dialog.customValue.text.toString().toFloat()
 
             if (value > maxValue) {
                 notifyWrongInput()
@@ -74,7 +70,7 @@ open class CustomInputDialog(
     }
 
     private fun notifyWrongInput() {
-        with (dialogView.customValue) {
+        with (dialog.customValue) {
             text = null
             hint = context.resources.getString(R.string.bad_input)
         }
