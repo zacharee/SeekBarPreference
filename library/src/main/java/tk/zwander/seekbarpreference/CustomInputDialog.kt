@@ -23,14 +23,9 @@ open class CustomInputDialog(
     private val dialogView = LayoutInflater.from(context)
         .inflate(R.layout.value_selector_dialog, null)
 
-    private val dialog = MaterialAlertDialogBuilder(context)
+    private val dialog = MaterialAlertDialogBuilder(context, style)
         .setView(dialogView)
         .create()
-        .apply {
-            if (style != 0) {
-                window.setTheme(style)
-            }
-        }
 
     init {
         dialogView.minValue.text = formatValue(this.minValue.toString())
