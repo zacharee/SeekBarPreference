@@ -1,7 +1,9 @@
 package tk.zwander.seekbarpreference
 
 import android.content.Context
+import android.os.Bundle
 import android.util.TypedValue
+import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.value_selector_dialog.*
 import java.text.DecimalFormat
@@ -18,8 +20,19 @@ open class CustomInputDialog(
     private val maxValue = maxValue * scale
     private val currentValue = unscaledCurrent * scale
 
-    private val dialog = BottomSheetDialog(context).apply {
-        setContentView(R.layout.value_selector_dialog)
+    private val dialog = object : BottomSheetDialog(context) {
+        init {
+            setContentView(R.layout.value_selector_dialog)
+        }
+
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+
+            val maxWidth = context.resources.getDimensionPixelSize(R.dimen.seekbar_max_bottom_sheet_width)
+            val screenWidth = context.resources.displayMetrics.widthPixels
+
+            window.setLayout(if (screenWidth > maxWidth) maxWidth else ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        }
     }
 
     init {
