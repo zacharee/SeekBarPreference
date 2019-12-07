@@ -3,88 +3,46 @@ package tk.zwander.seekbarpreference
 import android.content.Context
 import android.util.TypedValue
 import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.android.synthetic.main.value_selector_dialog.view.*
 import java.text.DecimalFormat
 
 open class CustomInputDialog(
-    private val context: Context,
+    private val activity: AppCompatActivity,
     minValue: Int,
     maxValue: Int,
     unscaledCurrent: Int,
     private val scale: Float,
-    private val style: Int,
+    style: Int,
     private val listener: ((progress: Int) -> Unit)? = null
 ) {
     private val minValue = minValue * scale
     private val maxValue = maxValue * scale
-    private val currentValue = unscaledCurrent * scale
 
-    private val dialogView = LayoutInflater.from(context)
-        .inflate(R.layout.value_selector_dialog, null)
-
-    private val dialog = MaterialAlertDialogBuilder(context, style)
-        .setView(dialogView)
-        .create()
-        .apply {
-            window.setWindowAnimations(style)
-        }
-
-    init {
-        dialogView.minValue.text = formatValue(this.minValue.toString())
-        dialogView.maxValue.text = formatValue(this.maxValue.toString())
-        dialogView.customValue.hint = formatValue(currentValue.toString())
-
-        dialogView.dialog_color_area.setBackgroundColor(fetchAccentColor())
-
-        dialogView.btn_apply.setOnClickListener { tryApply() }
-        dialogView.btn_cancel.setOnClickListener { dialog.dismiss() }
-    }
-
-    private fun fetchAccentColor(): Int {
-        val typedValue = TypedValue()
-
-        val a = context.obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorAccent))
-        val color = a.getColor(0, 0)
-        a.recycle()
-
-        return color
-    }
+    private val dialogFragment = InputDialogFragment.newInstance(
+        minValue, maxValue, unscaledCurrent, scale, style
+    )
 
     fun show() {
-        dialog.show()
+        dialogFragment.show(activity.supportFragmentManager, null)
     }
 
-    private fun tryApply() {
-        val value: Float
-
+    fun tryApply(value: Float) {
         try {
-            value = dialogView.customValue.text.toString().toFloat()
-
             if (value > maxValue) {
-                notifyWrongInput()
+                dialogFragment.notifyWrongInput()
                 return
             } else if (value < minValue) {
-                notifyWrongInput()
+                dialogFragment.notifyWrongInput()
                 return
             }
         } catch (e: Exception) {
-            notifyWrongInput()
+            dialogFragment.notifyWrongInput()
             return
         }
 
         listener?.invoke((value / scale).toInt())
-        dialog.dismiss()
-    }
-
-    private fun notifyWrongInput() {
-        with (dialogView.customValue) {
-            text = null
-            hint = context.resources.getString(R.string.bad_input)
-        }
-    }
-
-    private fun formatValue(value: String): String {
-        return DecimalFormat("0.##").format(value.toDouble())
+        dialogFragment.dismiss()
     }
 }

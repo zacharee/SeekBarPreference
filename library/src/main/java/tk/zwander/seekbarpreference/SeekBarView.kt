@@ -6,6 +6,7 @@ import android.preference.PreferenceManager
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
 import com.rey.material.widget.Slider
@@ -13,13 +14,21 @@ import kotlinx.android.synthetic.main.seekbar_guts.view.*
 import java.text.DecimalFormat
 
 open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionChangeListener {
-    constructor(context: Context) : super(context) { init(null) }
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) { init(attributeSet) }
+    constructor(context: Context) : super(context) {
+        init(null)
+    }
+
+    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
+        init(attributeSet)
+    }
+
     constructor(context: Context, attributeSet: AttributeSet, defStyleAttr: Int) : super(
         context,
         attributeSet,
         defStyleAttr
-    ) { init(attributeSet) }
+    ) {
+        init(attributeSet)
+    }
 
     var units: String? = null
     var defaultValue = 0
@@ -66,7 +75,8 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
 
     private fun init(attributeSet: AttributeSet?) {
         if (attributeSet != null) {
-            val array = context.theme.obtainStyledAttributes(attributeSet, R.styleable.SeekBarView, 0, 0)
+            val array =
+                context.theme.obtainStyledAttributes(attributeSet, R.styleable.SeekBarView, 0, 0)
 
             var min = minValue
             var max = maxValue
@@ -76,7 +86,8 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
 
             for (i in 0 until array.indexCount) {
                 when (val a = array.getIndex(i)) {
-                    R.styleable.SeekBarView_view_defaultValue -> defaultValue = array.getInteger(a, defaultValue)
+                    R.styleable.SeekBarView_view_defaultValue -> defaultValue =
+                        array.getInteger(a, defaultValue)
                 }
             }
 
@@ -109,7 +120,8 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        val colorAttr = context.theme.obtainStyledAttributes(TypedValue().data, intArrayOf(R.attr.colorAccent))
+        val colorAttr =
+            context.theme.obtainStyledAttributes(TypedValue().data, intArrayOf(R.attr.colorAccent))
         val color = colorAttr.getColor(0, 0)
         colorAttr.recycle()
 
@@ -123,9 +135,9 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
     }
 
     override fun onClick(v: View) {
-        when(v.id) {
+        when (v.id) {
             R.id.value_holder -> CustomInputDialog(
-                context, minValue,
+                context as AppCompatActivity, minValue,
                 maxValue, progress, scale,
                 dialogStyle
             ) { value ->
@@ -189,16 +201,18 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
         reset.isEnabled = enabled
     }
 
-    fun onBind(minValue: Int,
-               maxValue: Int,
-               progress: Int,
-               defaultValue: Int,
-               scale: Float,
-               units: String?,
-               key: String,
-               style: Int,
-               listener: SeekBarListener?,
-               prefs: SharedPreferences = sharedPreferences) {
+    fun onBind(
+        minValue: Int,
+        maxValue: Int,
+        progress: Int,
+        defaultValue: Int,
+        scale: Float,
+        units: String?,
+        key: String,
+        style: Int,
+        listener: SeekBarListener?,
+        prefs: SharedPreferences = sharedPreferences
+    ) {
         this.key = key
         this._progress = progress
         this.minValue = minValue
@@ -220,7 +234,8 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
         seekbar.setValue(value, true)
         seekbar.setOnPositionChangeListener(this)
 
-        progress = if (value > maxValue) maxValue else if (value < minValue) minValue else value.toInt()
+        progress =
+            if (value > maxValue) maxValue else if (value < minValue) minValue else value.toInt()
 
         seekbar_value.text = formatProgress(value * scale)
 
