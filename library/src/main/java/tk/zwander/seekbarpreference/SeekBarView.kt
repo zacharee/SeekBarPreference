@@ -210,10 +210,10 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
 
     fun setValue(value: Float, animate: Boolean) {
         seekbar.setOnPositionChangeListener(null)
-        seekbar.setValue(value, true)
+        seekbar.setValue(value.coerceIn(minValue.toFloat(), maxValue.toFloat()), animate)
         seekbar.setOnPositionChangeListener(this)
 
-        progress = if (value > maxValue) maxValue else if (value < minValue) minValue else value.toInt()
+        progress = value.coerceIn(minValue.toFloat(), maxValue.toFloat()).toInt()
 
         seekbar_value.text = formatProgress(value * scale)
 
