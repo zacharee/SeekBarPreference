@@ -2,12 +2,12 @@ package tk.zwander.seekbarpreference
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.preference.PreferenceManager
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
+import androidx.preference.PreferenceManager
 import com.rey.material.widget.Slider
 import kotlinx.android.synthetic.main.seekbar_guts.view.*
 import java.text.DecimalFormat
