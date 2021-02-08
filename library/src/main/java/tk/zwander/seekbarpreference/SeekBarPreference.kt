@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import android.util.AttributeSet
 import androidx.preference.Preference
 import androidx.preference.PreferenceViewHolder
-import kotlinx.android.synthetic.main.seekbar.view.*
 
 open class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceChangeListener {
     var minValue = 0
@@ -116,7 +115,7 @@ open class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceC
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
 
-        val seekbar = holder.itemView.seekbar_root as SeekBarView
+        val seekbar = holder.itemView.findViewById(R.id.seekbar_root) as SeekBarView
         seekbar.onBind(minValue, maxValue, progress, defaultValue, scale, units, key, null, sharedPreferences)
     }
 

@@ -4,12 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
 import androidx.preference.PreferenceManager
 import com.rey.material.widget.Slider
-import kotlinx.android.synthetic.main.seekbar_guts.view.*
+import tk.zwander.seekbarpreference.databinding.SeekbarGutsBinding
 import java.text.DecimalFormat
 
 open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionChangeListener {
@@ -53,14 +54,16 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
     var dialogEnabled = true
         set(value) {
             field = value
-            value_holder.isClickable = value
-            value_holder.isEnabled = value
-            value_holder.setOnClickListener(if (value) this else null)
-            bottom_line.visibility = if (value) View.VISIBLE else View.INVISIBLE
+            binding.valueHolder.isClickable = value
+            binding.valueHolder.isEnabled = value
+            binding.valueHolder.setOnClickListener(if (value) this else null)
+            binding.bottomLine.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
     private var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     var listener: SeekBarListener? = null
+
+    private val binding by lazy { SeekbarGutsBinding.inflate(LayoutInflater.from(context), this) }
 
     private fun init(attributeSet: AttributeSet?) {
         if (attributeSet != null) {
@@ -90,14 +93,14 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
 
             _progress = defaultValue
 
-            View.inflate(context, R.layout.seekbar_guts, this)
+            binding
 
             if (!isPref) {
                 onBind(min, max, progress, defaultValue, scl, unt, "", null)
             }
 
             array.recycle()
-        } else View.inflate(context, R.layout.seekbar_guts, this)
+        } else binding
 
         onFinishInflate()
     }
@@ -109,13 +112,13 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
         val color = colorAttr.getColor(0, 0)
         colorAttr.recycle()
 
-        seekbar.setPrimaryColor(color)
-        seekbar.setSecondaryColor(ColorUtils.setAlphaComponent(color, 0x33))
+        binding.seekbar.setPrimaryColor(color)
+        binding.seekbar.setSecondaryColor(ColorUtils.setAlphaComponent(color, 0x33))
 
-        up.setOnClickListener(this)
-        down.setOnClickListener(this)
-        reset.setOnClickListener(this)
-        value_holder.setOnClickListener(this)
+        binding.up.setOnClickListener(this)
+        binding.down.setOnClickListener(this)
+        binding.reset.setOnClickListener(this)
+        binding.valueHolder.setOnClickListener(this)
     }
 
     override fun onClick(v: View) {
@@ -162,26 +165,26 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
     ) {
         this.progress = newValue
         listener?.onProgressChanged(newValue, newValue * scale)
-        seekbar_value.text = formatProgress(newValue * scale)
+        binding.seekbarValue.text = formatProgress(newValue * scale)
 
         updateFill(newValue)
     }
 
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
-        seekbar_value.isEnabled = enabled
-        value_holder.isClickable = enabled
-        value_holder.isEnabled = enabled
+        binding.seekbarValue.isEnabled = enabled
+        binding.valueHolder.isClickable = enabled
+        binding.valueHolder.isEnabled = enabled
 
-        seekbar.isEnabled = enabled
-        seekbar.isClickable = enabled
+        binding.seekbar.isEnabled = enabled
+        binding.seekbar.isClickable = enabled
 
-        measurement_unit.isEnabled = enabled
-        bottom_line.isEnabled = enabled
-        button_holder.isEnabled = enabled
-        up.isEnabled = enabled
-        down.isEnabled = enabled
-        reset.isEnabled = enabled
+        binding.measurementUnit.isEnabled = enabled
+        binding.bottomLine.isEnabled = enabled
+        binding.buttonHolder.isEnabled = enabled
+        binding.up.isEnabled = enabled
+        binding.down.isEnabled = enabled
+        binding.reset.isEnabled = enabled
     }
 
     fun onBind(minValue: Int,
@@ -203,19 +206,19 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
         this.listener = listener
         this.sharedPreferences = prefs
 
-        seekbar.setValueRange(minValue, maxValue, false)
+        binding.seekbar.setValueRange(minValue, maxValue, false)
         setValue(progress.toFloat(), false)
-        seekbar.setOnPositionChangeListener(this)
+        binding.seekbar.setOnPositionChangeListener(this)
     }
 
     fun setValue(value: Float, animate: Boolean) {
-        seekbar.setOnPositionChangeListener(null)
-        seekbar.setValue(value.coerceIn(minValue.toFloat(), maxValue.toFloat()), animate)
-        seekbar.setOnPositionChangeListener(this)
+        binding.seekbar.setOnPositionChangeListener(null)
+        binding.seekbar.setValue(value.coerceIn(minValue.toFloat(), maxValue.toFloat()), animate)
+        binding.seekbar.setOnPositionChangeListener(this)
 
         progress = value.coerceIn(minValue.toFloat(), maxValue.toFloat()).toInt()
 
-        seekbar_value.text = formatProgress(value * scale)
+        binding.seekbarValue.text = formatProgress(value * scale)
 
         updateFill(value.toInt())
     }
@@ -225,15 +228,15 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
     fun setValueRange(min: Int, max: Int, animate: Boolean) {
         minValue = min
         maxValue = max
-        seekbar.setValueRange(min, max, animate)
+        binding.seekbar.setValueRange(min, max, animate)
     }
 
     private fun updateFill(value: Int) {
-        if (!seekbar.isThumbStrokeAnimatorRunning) {
+        if (!binding.seekbar.isThumbStrokeAnimatorRunning) {
             if (value == defaultValue)
-                seekbar.setThumbFillPercent(0)
+                binding.seekbar.setThumbFillPercent(0)
             else
-                seekbar.setThumbFillPercent(1)
+                binding.seekbar.setThumbFillPercent(1)
         }
     }
 

@@ -3,9 +3,10 @@ package tk.zwander.seekbarpreference
 import android.content.Context
 import android.os.Bundle
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.value_selector_dialog.*
+import tk.zwander.seekbarpreference.databinding.ValueSelectorDialogBinding
 import java.text.DecimalFormat
 
 open class CustomInputDialog(
@@ -20,9 +21,11 @@ open class CustomInputDialog(
     private val maxValue = maxValue * scale
     private val currentValue = unscaledCurrent * scale
 
+    private val dialogBinding = ValueSelectorDialogBinding.inflate(LayoutInflater.from(context))
+
     private val dialog = object : BottomSheetDialog(context) {
         init {
-            setContentView(R.layout.value_selector_dialog)
+            setContentView(dialogBinding.root)
         }
 
         override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,14 +39,14 @@ open class CustomInputDialog(
     }
 
     init {
-        dialog.minValue.text = formatValue(this.minValue.toString())
-        dialog.maxValue.text = formatValue(this.maxValue.toString())
-        dialog.customValue.hint = formatValue(currentValue.toString())
+        dialogBinding.minValue.text = formatValue(this.minValue.toString())
+        dialogBinding.maxValue.text = formatValue(this.maxValue.toString())
+        dialogBinding.customValue.hint = formatValue(currentValue.toString())
 
 //        dialog.dialog_color_area.setBackgroundColor(fetchAccentColor())
 
-        dialog.btn_apply.setOnClickListener { tryApply() }
-        dialog.btn_cancel.setOnClickListener { dialog.dismiss() }
+        dialogBinding.btnApply.setOnClickListener { tryApply() }
+        dialogBinding.btnCancel.setOnClickListener { dialog.dismiss() }
     }
 
     private fun fetchAccentColor(): Int {
@@ -64,7 +67,7 @@ open class CustomInputDialog(
         val value: Float
 
         try {
-            value = dialog.customValue.text.toString().toFloat()
+            value = dialogBinding.customValue.text.toString().toFloat()
 
             if (value > maxValue) {
                 notifyWrongInput()
@@ -83,7 +86,7 @@ open class CustomInputDialog(
     }
 
     private fun notifyWrongInput() {
-        with (dialog.customValue) {
+        with(dialogBinding.customValue) {
             text = null
             hint = context.resources.getString(R.string.bad_input)
         }
