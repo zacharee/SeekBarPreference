@@ -26,7 +26,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0-beta01'
     implementation 'androidx.preference:preference-ktx:1.1.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'com.github.zacharee:material:18bda1a64b'
+    implementation 'com.github.zacharee:material:1bb4c3e132'
 }
 
 afterEvaluate {

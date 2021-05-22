@@ -34,7 +34,7 @@ open class CustomInputDialog(
             val maxWidth = context.resources.getDimensionPixelSize(R.dimen.seekbar_max_bottom_sheet_width)
             val screenWidth = context.resources.displayMetrics.widthPixels
 
-            window.setLayout(if (screenWidth > maxWidth) maxWidth else ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            window?.setLayout(if (screenWidth > maxWidth) maxWidth else ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
         }
     }
 
