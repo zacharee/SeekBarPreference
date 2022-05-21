@@ -7,6 +7,17 @@
         android:icon="@android:drawable/btn_radio"
         />
 
+    <tk.zwander.seekbarpreference.SeekBarPreferenceNew
+        android:key="new_normal"
+        android:summary="New"
+        android:title="New"
+        app:minValueFloat="1.5"
+        app:maxValueFloat="100.1"
+        app:units="mm"
+        app:stepSize="0.1"
+        android:defaultValue="1.5"
+        />
+
     <tk.zwander.seekbarpreference.SeekBarPreference
         android:key="normal"
         android:summary="Test"

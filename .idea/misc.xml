@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="library/src/main/res/layout/seekbar.xml" value="0.2046875" />
+        <entry key="library/src/main/res/layout/seekbar_guts.xml" value="0.2046875" />
+        <entry key="library/src/main/res/layout/seekbar_guts_new.xml" value="0.2046875" />
+        <entry key="library/src/main/res/layout/seekbar_new.xml" value="0.2046875" />
+        <entry key="library/src/main/res/layout/seekbar_preference_layout.xml" value="0.2046875" />
+        <entry key="library/src/main/res/layout/seekbar_preference_layout_new.xml" value="0.2046875" />
+        <entry key="sample/src/main/res/layout/activity_main.xml" value="0.2046875" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_15" default="true" project-jdk-name="15" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

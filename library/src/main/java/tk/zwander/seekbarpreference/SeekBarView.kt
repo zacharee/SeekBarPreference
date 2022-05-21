@@ -9,8 +9,8 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.ColorUtils
 import androidx.preference.PreferenceManager
-import com.rey.material.widget.Slider
 import tk.zwander.seekbarpreference.databinding.SeekbarGutsBinding
+import tk.zwander.seekbarpreference.slider.Slider
 import java.text.DecimalFormat
 
 open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositionChangeListener {
@@ -124,11 +124,11 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
     override fun onClick(v: View) {
         when(v.id) {
             R.id.value_holder -> CustomInputDialog(
-                context, minValue,
-                maxValue, progress, scale
+                context, minValue.toFloat(),
+                maxValue.toFloat(), progress.toFloat(), scale
             ) { value ->
-                listener?.onProgressChanged(value, value * scale)
-                setValue(value.toFloat(), true)
+                listener?.onProgressChanged(value.toInt(), value * scale)
+                setValue(value, true)
             }
                 .show()
             R.id.up -> {

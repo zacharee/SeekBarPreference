@@ -19,7 +19,7 @@
         android:scaleType="center"
         android:tint="?android:textColorPrimary" />
 
-    <tk.zwander.seekbarpreference.slider.Slider
+    <com.google.android.material.slider.Slider
         android:id="@+id/seekbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/value_holder"

@@ -11,11 +11,11 @@ import java.text.DecimalFormat
 
 open class CustomInputDialog(
     private val context: Context,
-    minValue: Int,
-    maxValue: Int,
-    unscaledCurrent: Int,
+    minValue: Float,
+    maxValue: Float,
+    unscaledCurrent: Float,
     private val scale: Float,
-    private val listener: ((progress: Int) -> Unit)? = null
+    private val listener: ((progress: Float) -> Unit)? = null
 ) {
     private val minValue = minValue * scale
     private val maxValue = maxValue * scale
@@ -42,8 +42,6 @@ open class CustomInputDialog(
         dialogBinding.minValue.text = formatValue(this.minValue.toString())
         dialogBinding.maxValue.text = formatValue(this.maxValue.toString())
         dialogBinding.customValue.hint = formatValue(currentValue.toString())
-
-//        dialog.dialog_color_area.setBackgroundColor(fetchAccentColor())
 
         dialogBinding.btnApply.setOnClickListener { tryApply() }
         dialogBinding.btnCancel.setOnClickListener { dialog.dismiss() }
@@ -81,7 +79,7 @@ open class CustomInputDialog(
             return
         }
 
-        listener?.invoke((value / scale).toInt())
+        listener?.invoke(value / scale)
         dialog.dismiss()
     }
 
