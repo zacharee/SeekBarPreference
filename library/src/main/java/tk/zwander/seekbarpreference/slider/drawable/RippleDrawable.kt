@@ -111,11 +111,11 @@ class RippleDrawable private constructor(
 
     override fun setAlpha(alpha: Int) {
         myAlpha = alpha
-        if (backgroundDrawable != null) backgroundDrawable!!.alpha = alpha
+        backgroundDrawable?.alpha = alpha
     }
 
-    override fun setColorFilter(filter: ColorFilter) {
-        if (backgroundDrawable != null) backgroundDrawable!!.colorFilter = filter
+    override fun setColorFilter(filter: ColorFilter?) {
+        backgroundDrawable?.colorFilter = filter
     }
 
     @Suppress("DeprecatedCallableAddReplaceWith")

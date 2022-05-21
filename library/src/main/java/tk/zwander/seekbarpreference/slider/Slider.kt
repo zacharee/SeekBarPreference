@@ -3,7 +3,6 @@ package tk.zwander.seekbarpreference.slider
 import android.content.Context
 import tk.zwander.seekbarpreference.slider.util.ThemeUtil.colorControlActivated
 import tk.zwander.seekbarpreference.slider.util.ThemeUtil.colorControlNormal
-import tk.zwander.seekbarpreference.slider.util.ViewUtil.applyStyle
 import tk.zwander.seekbarpreference.slider.util.ThemeUtil.dpToPx
 import tk.zwander.seekbarpreference.slider.util.TypefaceUtil.load
 import tk.zwander.seekbarpreference.slider.RippleManager.Companion.cancelRipple
@@ -167,7 +166,6 @@ class Slider : View {
     }
 
     fun applyStyle(resId: Int) {
-        applyStyle(this, resId)
         applyStyle(context, null, 0, resId)
     }
 
@@ -469,7 +467,7 @@ class Slider : View {
             return _rippleManager!!
         }
 
-    override fun setOnClickListener(l: OnClickListener) {
+    override fun setOnClickListener(l: OnClickListener?) {
         val rippleManager = rippleManager
         if (l === rippleManager) {
             super.setOnClickListener(l)
@@ -828,11 +826,10 @@ class Slider : View {
                 canvas.translate(0f, -thumbRadius * 2 * factor)
                 canvas.drawPath(markPath, paint)
                 paint.color = getColor(textColor, factor)
-                canvas.drawText(valueText, x, y + textHeight / 2f - thumbRadius * factor, paint)
+                canvas.drawText(valueText!!, x, y + textHeight / 2f - thumbRadius * factor, paint)
                 canvas.restoreToCount(saveCount)
             }
-            val radius =
-                if (isEnabled) thumbCurrentRadius else thumbCurrentRadius - thumbBorderSize
+            val radius = if (isEnabled) thumbCurrentRadius else thumbCurrentRadius - thumbBorderSize
             if (radius > 0) {
                 paint.color = filledPrimaryColor
                 canvas.drawCircle(x, y, radius, paint)
@@ -1048,5 +1045,5 @@ class Slider : View {
     }
 
     @Parcelize
-    internal data class SavedState(val position: Float = 0f, val source: Parcelable) : BaseSavedState(source)
+    internal data class SavedState(val position: Float = 0f, val source: Parcelable?) : BaseSavedState(source)
 }

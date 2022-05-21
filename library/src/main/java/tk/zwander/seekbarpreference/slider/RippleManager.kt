@@ -1,7 +1,6 @@
 package tk.zwander.seekbarpreference.slider
 
 import android.content.Context
-import tk.zwander.seekbarpreference.slider.util.ViewUtil.setBackground
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -44,7 +43,7 @@ class RippleManager : View.OnClickListener {
         }
         a.recycle()
         if (drawable != null) {
-            setBackground(v, drawable)
+            v.background = drawable
         }
     }
 
