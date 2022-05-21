@@ -60,7 +60,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
             binding.bottomLine.visibility = if (value) View.VISIBLE else View.INVISIBLE
         }
 
-    private var sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+    private var sharedPreferences: SharedPreferences? = PreferenceManager.getDefaultSharedPreferences(context)
     var listener: SeekBarListener? = null
 
     private val binding by lazy { SeekbarGutsBinding.inflate(LayoutInflater.from(context), this) }
@@ -195,7 +195,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
                units: String?,
                key: String,
                listener: SeekBarListener?,
-               prefs: SharedPreferences = sharedPreferences) {
+               prefs: SharedPreferences? = sharedPreferences) {
         this.key = key
         this._progress = progress
         this.minValue = minValue
@@ -247,9 +247,9 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
     private fun persistProgress(progress: Int) {
         if (key.isNotBlank())
             sharedPreferences
-                .edit()
-                .putInt(key, progress)
-                .apply()
+                ?.edit()
+                ?.putInt(key, progress)
+                ?.apply()
     }
 
     interface SeekBarListener {

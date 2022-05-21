@@ -95,13 +95,13 @@ open class SeekBarPreference : Preference, SharedPreferences.OnSharedPreferenceC
     override fun onAttached() {
         super.onAttached()
 
-        sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        sharedPreferences?.registerOnSharedPreferenceChangeListener(this)
     }
 
     override fun onDetached() {
         super.onDetached()
 
-        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        sharedPreferences?.unregisterOnSharedPreferenceChangeListener(this)
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
