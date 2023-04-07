@@ -82,7 +82,8 @@ class Slider : View {
     private var interpolator: Interpolator? = null
     private var baselineOffset = 0
     private var touchSlop = 0
-    private var isDragging = false
+    var isDragging = false
+        private set
     private var thumbCurrentRadius = 0f
     private var thumbFillPercent = 0f
     private var alwaysFillThumb = false
