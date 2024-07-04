@@ -50,10 +50,12 @@ dependencies {
 afterEvaluate {
     publishing {
         publications {
-            // Creates a Maven publication called "release".
-            create<MavenPublication>("release") {
-                // Applies the component for the release build variant.
+            create("release", MavenPublication::class.java) {
                 from(components.getByName("release"))
+
+                groupId = "dev.zwander.seekbarpreference"
+                artifactId = "final"
+                version = "1.0"
             }
         }
     }
