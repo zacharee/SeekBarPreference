@@ -108,7 +108,7 @@ open class SeekBarView : ConstraintLayout, View.OnClickListener, Slider.OnPositi
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        val colorAttr = context.theme.obtainStyledAttributes(TypedValue().data, intArrayOf(R.attr.colorAccent))
+        val colorAttr = context.theme.obtainStyledAttributes(TypedValue().data, intArrayOf(androidx.appcompat.R.attr.colorAccent))
         val color = colorAttr.getColor(0, 0)
         colorAttr.recycle()
 

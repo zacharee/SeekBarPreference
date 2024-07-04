@@ -50,7 +50,7 @@ open class CustomInputDialog(
     private fun fetchAccentColor(): Int {
         val typedValue = TypedValue()
 
-        val a = context.obtainStyledAttributes(typedValue.data, intArrayOf(R.attr.colorAccent))
+        val a = context.obtainStyledAttributes(typedValue.data, intArrayOf(androidx.appcompat.R.attr.colorAccent))
         val color = a.getColor(0, 0)
         a.recycle()
 

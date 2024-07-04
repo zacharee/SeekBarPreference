@@ -63,9 +63,9 @@ open class SeekBarPreferenceNew : Preference, SharedPreferences.OnSharedPreferen
         widgetLayoutResource = R.layout.seekbar_new
 
         if (attributeSet != null) {
-            val defArray = context.theme.obtainStyledAttributes(attributeSet, R.styleable.Preference, 0, 0)
+            val defArray = context.theme.obtainStyledAttributes(attributeSet, androidx.preference.R.styleable.Preference, 0, 0)
 
-            defaultValue = defArray.getFloat(R.styleable.Preference_android_defaultValue, defaultValue)
+            defaultValue = defArray.getFloat(androidx.preference.R.styleable.Preference_android_defaultValue, defaultValue)
 
             defArray.recycle()
 

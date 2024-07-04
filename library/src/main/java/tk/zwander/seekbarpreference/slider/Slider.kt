@@ -271,7 +271,7 @@ class Slider : View {
         )
         if (textStyleDefined) typeface = load(context, familyName, style)
         if (textSize < 0) textSize =
-            context.resources.getDimensionPixelOffset(R.dimen.abc_text_size_small_material)
+            context.resources.getDimensionPixelOffset(com.google.android.material.R.dimen.abc_text_size_small_material)
         paint.textSize = textSize.toFloat()
         paint.textAlign = Paint.Align.CENTER
         paint.typeface = typeface
@@ -450,11 +450,18 @@ class Slider : View {
         valueDescriptionProvider = provider
     }
 
+    @Suppress("DEPRECATION")
     @Deprecated("Deprecated in Java")
     override fun setBackgroundDrawable(drawable: Drawable) {
         val background = background
         if (background is RippleDrawable && drawable !is RippleDrawable) background.backgroundDrawable =
             drawable else super.setBackgroundDrawable(drawable)
+    }
+
+    override fun setBackground(drawable: Drawable) {
+        val background = background
+        if (background is RippleDrawable && drawable !is RippleDrawable) background.backgroundDrawable =
+            drawable else super.setBackground(drawable)
     }
 
     private var _rippleManager: RippleManager? = null

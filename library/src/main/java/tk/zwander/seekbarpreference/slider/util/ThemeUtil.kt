@@ -3,6 +3,7 @@ package tk.zwander.seekbarpreference.slider.util
 import android.util.TypedValue
 import android.content.Context
 import android.content.res.TypedArray
+import androidx.core.content.res.ResourcesCompat
 import tk.zwander.seekbarpreference.R
 import java.lang.Exception
 
@@ -24,7 +25,7 @@ object ThemeUtil {
                 if (value.type >= TypedValue.TYPE_FIRST_INT && value.type <= TypedValue.TYPE_LAST_INT) {
                     return value.data
                 } else if (value.type == TypedValue.TYPE_STRING) {
-                    return context.resources.getColor(value.resourceId)
+                    return ResourcesCompat.getColor(context.resources, value.resourceId, theme)
                 }
             }
         } catch (_: Exception) {}
@@ -35,7 +36,7 @@ object ThemeUtil {
     fun colorControlNormal(context: Context, defaultValue: Int): Int {
         return getColor(
             context,
-            R.attr.colorControlNormal,
+            androidx.appcompat.R.attr.colorControlNormal,
             defaultValue
         )
     }
@@ -44,7 +45,7 @@ object ThemeUtil {
     fun colorControlActivated(context: Context, defaultValue: Int): Int {
         return getColor(
             context,
-            R.attr.colorControlActivated,
+            androidx.appcompat.R.attr.colorControlActivated,
             defaultValue
         )
     }
@@ -53,7 +54,7 @@ object ThemeUtil {
     fun colorControlHighlight(context: Context, defaultValue: Int): Int {
         return getColor(
             context,
-            R.attr.colorControlHighlight,
+            androidx.appcompat.R.attr.colorControlHighlight,
             defaultValue
         )
     }
