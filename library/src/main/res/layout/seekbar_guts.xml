@@ -10,6 +10,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_undo_black_24dp"
+        android:src="@drawable/ic_undo_black_24dp"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginEnd="4dp"
@@ -17,7 +18,8 @@
         android:clickable="true"
         android:focusable="true"
         android:scaleType="center"
-        android:tint="?android:textColorPrimary" />
+        android:tint="?android:textColorPrimary"
+        app:tint="?android:textColorPrimary" />
 
     <tk.zwander.seekbarpreference.slider.Slider
         android:id="@+id/seekbar"
@@ -95,6 +97,7 @@
         <ImageView
             android:id="@+id/up"
             app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp"
+            android:src="@drawable/ic_keyboard_arrow_up_black_24dp"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -102,11 +105,13 @@
             android:clickable="true"
             android:focusable="true"
             android:scaleType="center"
-            android:tint="?android:textColorPrimary" />
+            android:tint="?android:textColorPrimary"
+            app:tint="?android:textColorPrimary" />
 
         <ImageView
             android:id="@+id/down"
             app:srcCompat="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -114,7 +119,8 @@
             android:clickable="true"
             android:focusable="true"
             android:scaleType="center"
-            android:tint="?android:textColorPrimary" />
+            android:tint="?android:textColorPrimary"
+            app:tint="?android:textColorPrimary" />
 
 
     </LinearLayout>
